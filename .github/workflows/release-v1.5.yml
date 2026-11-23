@@ -38,3 +38,19 @@ jobs:
               --title "CtrlHz180 v1.5" \
               --notes "PSP用入力サンプリング約180Hz、ボタン離脱2サンプル判定、アナログ無加工。PSP-3000実機での最終検証は未実施。\n\n~180Hz default sampling, two-sample button release filtering, unchanged analog input. Final PSP hardware validation pending."
           fi
+
+      - name: Explain input latency in release notes
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release edit v1.5 --notes-file - <<'EOF'
+          **PSPの操作を低遅延化するプラグインです。**
+
+          ボタンの状態をより細かく確認し、ゲームの操作への反応を速くします。効果はゲームによって異なります。
+
+          ボタンの誤入力対策つき。アナログスティックの動きは変更しません。
+
+          ※PSP実機での最終動作確認は未実施です。
+
+          **Helps reduce PSP input delay for more responsive controls.** Results vary by game. Final PSP hardware validation is pending.
+          EOF

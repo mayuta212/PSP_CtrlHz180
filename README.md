@@ -1,5 +1,6 @@
 # CtrlHz180
 
+PSPの入力API上限を強制し、遅延を軽減させる
 PSP controller plugin for ARK/PRO. / ARK・PRO向けPSP入力プラグイン。
 
 ## 日本語

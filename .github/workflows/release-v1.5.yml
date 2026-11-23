@@ -1,0 +1,40 @@
+name: Release v1.5
+
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/release-v1.5.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build PSP PRX
+        run: |
+          docker run --rm \
+            -v "$GITHUB_WORKSPACE:/work" \
+            -w /work/source \
+            ghcr.io/pspdev/pspdev:latest \
+            sh -lc 'make clean && make'
+          test -s source/ctrlhz180.prx
+          file source/ctrlhz180.prx
+          sha256sum source/ctrlhz180.prx
+
+      - name: Publish release with PRX
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view v1.5 >/dev/null 2>&1; then
+            gh release upload v1.5 source/ctrlhz180.prx --clobber
+          else
+            gh release create v1.5 source/ctrlhz180.prx \
+              --target "$GITHUB_SHA" \
+              --title "CtrlHz180 v1.5" \
+              --notes "PSP用入力サンプリング約180Hz、ボタン離脱2サンプル判定、アナログ無加工。PSP-3000実機での最終検証は未実施。\n\n~180Hz default sampling, two-sample button release filtering, unchanged analog input. Final PSP hardware validation pending."
+          fi

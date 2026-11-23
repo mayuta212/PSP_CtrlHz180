@@ -1,0 +1,8 @@
+*.o
+*.elf
+*.prx
+*.PBP
+*.SFO
+*.map
+*.a
+.DS_Store

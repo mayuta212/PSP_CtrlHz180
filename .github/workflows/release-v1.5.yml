@@ -21,7 +21,7 @@ jobs:
             -v "$GITHUB_WORKSPACE:/work" \
             -w /work/source \
             ghcr.io/pspdev/pspdev:latest \
-            sh -lc 'make clean && make'
+            sh -c 'export PATH="$PATH:/usr/local/pspdev/bin"; make clean && make'
           test -s source/ctrlhz180.prx
           file source/ctrlhz180.prx
           sha256sum source/ctrlhz180.prx
